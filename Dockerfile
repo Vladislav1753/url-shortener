@@ -9,11 +9,15 @@ COPY ./app ./app
 COPY alembic.ini ./
 COPY ./migrations ./migrations
 COPY ./tests ./tests
+COPY ./entrypoint.sh ./
+ENTRYPOINT ["sh", "entrypoint.sh"]
 
 FROM base AS prod
 RUN uv sync --frozen --no-dev
 COPY ./app ./app
 COPY alembic.ini ./
 COPY ./migrations ./migrations
+COPY ./entrypoint.sh ./
 EXPOSE 8000
+ENTRYPOINT ["sh", "entrypoint.sh"]
 CMD ["uv", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
