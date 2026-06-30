@@ -16,6 +16,9 @@ format:
 pre-commit:
 	python -m pre_commit run --all-files
 
+test:
+	python -m pytest
+
 up:
 	$(DC) up
 
