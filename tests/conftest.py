@@ -1,3 +1,5 @@
+from unittest.mock import AsyncMock
+
 import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
@@ -6,6 +8,7 @@ from testcontainers.postgres import PostgresContainer
 
 from app.db.database import Base
 from app.repositories.link import LinkRepository
+from app.services.link import LinkService
 from tests.utils import make_link
 
 
@@ -44,6 +47,16 @@ async def session(engine):
 @pytest_asyncio.fixture
 async def repo(session):
     return LinkRepository(session)
+
+
+@pytest.fixture
+def mock_repo():
+    return AsyncMock(spec=LinkRepository)
+
+
+@pytest.fixture
+def service(mock_repo):
+    return LinkService(mock_repo)
 
 
 @pytest_asyncio.fixture
